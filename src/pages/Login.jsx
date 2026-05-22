@@ -71,7 +71,7 @@ const LoginPage = () => {
       JSON.stringify(storedUser)
     );
 
-    navigate("/dashboard");
+    navigate("/modes");
   };
 
   const guestLogin = () => {

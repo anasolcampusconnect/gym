@@ -9,15 +9,23 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import DashboardPage from "./pages/Dashboard";
 import CalendarPage from "./pages/CalendarPage";
-
-import ExerciseLibraryPage from "./pages/ExerciseLibraryPage";
+import MainLayout from "./layouts/MainLayout";
 
 import AddCustomExercisePage from "./pages/AddCustomExercisePage";
-
-import FavoriteExercisesPage from "./pages/FavoriteExercisesPage";
 import LogWorkoutPage from "./pages/LogWorkoutPage";
 import WorkoutHistoryPage from "./pages/WorkoutHistoryPage";
-
+import ProgressAnalyticsPage from "./pages/ProgressAnalyticsPage";
+import WorkoutPlansPage from "./pages/WorkoutPlansPage";
+import ModesPage from "./pages/ModesPage";
+import CategoriesPage from "./pages/CategoriesPage";
+import SubCategoryPage from "./pages/SubCategoryPage";
+import WorkoutSessionPage from "./pages/WorkoutSessionPage";
+import ExercisesLibraryPage from "./pages/ExercisesLibraryPage";
+import FavoritesPage from "./pages/FavoritesPage";
+import MoodWorkout from "./pages/MoodWorkoutPage";
+import Workout from "./pages/WorkoutPage";
+import TimerPage from "./pages/RestTimer";
+import SettingsPage from "./pages/SettingsPage";
 function App() {
 
   const user =
@@ -27,7 +35,7 @@ function App() {
 
   return (
     <BrowserRouter>
-
+     <MainLayout>
       <Routes>
 
         {/* LOGIN */}
@@ -40,6 +48,11 @@ function App() {
         <Route
           path="/register"
           element={<RegisterPage />}
+        />
+
+         <Route
+          path="/settings"
+          element={<SettingsPage />}
         />
 
         {/* DASHBOARD */}
@@ -65,13 +78,12 @@ function App() {
             )
           }
         />
-
-        {/* EXERCISES */}
+           {/* EXERCISES Library*/}
         <Route
-          path="/exercises"
+          path="/exercises-library"
           element={
             user ? (
-              <ExerciseLibraryPage />
+              <ExercisesLibraryPage />
             ) : (
               <Navigate to="/" />
             )
@@ -90,12 +102,13 @@ function App() {
           }
         />
 
-        {/* FAVORITES */}
+    
+         {/* FAVORITES */}
         <Route
-          path="/favorites"
+          path="/favorites-exercise"
           element={
             user ? (
-              <FavoriteExercisesPage />
+              <FavoritesPage/>
             ) : (
               <Navigate to="/" />
             )
@@ -123,9 +136,61 @@ function App() {
             )
           }
      />
+      <Route
+          path="/moodworkout"
+          element={<MoodWorkout/>}
+        />
+      <Route
+          path="/modes"
+          element={<ModesPage />}
+        />
+         <Route
+          path="/workout"
+          element={<Workout/>}
+        />
+          <Route
+          path="/timer"
+          element={<TimerPage/>}
+        />
+
+
+        <Route
+          path="/categories/:slug"
+          element={<CategoriesPage />}
+        />
+
+        <Route
+          path="/subcategory/:slug/:categoryId"
+          element={<SubCategoryPage />}
+        />
+
+        <Route
+          path="/workout-session/:slug/:categoryId/:subId"
+          element={<WorkoutSessionPage />}
+        />
+     <Route
+  path="/analytics"
+  element={
+    user ? (
+      <ProgressAnalyticsPage />
+    ) : (
+      <Navigate to="/" />
+    )
+  }
+/>
+<Route
+  path="/workout-plans"
+  element={
+    user ? (
+      <WorkoutPlansPage />
+    ) : (
+      <Navigate to="/" />
+    )
+  }
+/>
 
       </Routes>
-
+</MainLayout>
     </BrowserRouter>
   );
 }

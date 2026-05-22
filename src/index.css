@@ -1,7 +1,55 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
   background: #0f172a;
+} */
+
+
+
+@import "tailwindcss";
+
+/* ========================================= */
+/* GLOBAL RESET */
+/* ========================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================= */
+/* BODY */
+/* ========================================= */
+
+body {
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
+
+/* ========================================= */
+/* HIDE SCROLLBAR */
+/* ========================================= */
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* ========================================= */
+/* SMOOTH SCROLL */
+/* ========================================= */
+
+html {
+  scroll-behavior: smooth;
 }
