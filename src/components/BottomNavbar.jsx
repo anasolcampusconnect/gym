@@ -97,13 +97,6 @@ if (hideNavbar)
       icon: Home,
       path: "/modes",
     },
-
-    {
-      label: "Dashboard",
-      icon: LayoutDashboard,
-      path: "/dashboard",
-    },
-
     {
       label: "Workout",
       icon: Dumbbell,
@@ -115,7 +108,11 @@ if (hideNavbar)
       icon: BarChart3,
       path: "/analytics",
     },
-
+    {
+      label: "Dashboard",
+      icon: LayoutDashboard,
+      path: "/dashboard",
+    },
     {
       label: "Profile",
       icon: User,

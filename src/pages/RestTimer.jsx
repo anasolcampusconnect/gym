@@ -11,6 +11,8 @@ import {
   Timer,
   RotateCcw,
   CheckCircle2,
+  Dumbbell,
+  Sparkles,
 } from "lucide-react";
 
 import {
@@ -25,6 +27,101 @@ import {
 } from "react";
 
 const RestTimerPage = () => {
+
+  // =========================================
+  // USER + THEME
+  // =========================================
+
+  const currentUser =
+    JSON.parse(
+      localStorage.getItem(
+        "gym_user"
+      )
+    ) || {};
+
+  const userId =
+    currentUser?.email ||
+    "guest";
+
+  const settings =
+    JSON.parse(
+      localStorage.getItem(
+        `gym_settings_${userId}`
+      )
+    ) || {};
+
+  const currentTheme =
+    settings?.theme ||
+    "dark";
+
+  const isDark =
+    currentTheme === "dark" ||
+
+    (
+      currentTheme === "system" &&
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches
+    );
+
+  // =========================================
+  // THEME CLASSES
+  // =========================================
+
+  const bgClass =
+    isDark
+
+      ? `
+      bg-[#070B1A]
+      text-white
+      `
+
+      : `
+      bg-gradient-to-br
+      from-[#fff7fb]
+      via-[#f5f7ff]
+      to-[#eefcff]
+      text-slate-900
+      `;
+
+  const cardClass =
+    isDark
+
+      ? `
+      bg-white/[0.04]
+      border-white/10
+      backdrop-blur-xl
+      `
+
+      : `
+      bg-white/75
+      border-white/70
+      backdrop-blur-2xl
+      shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+      `;
+      
+  const inputClass =
+    isDark
+
+      ? `
+      bg-white/5
+      border-white/10
+      text-white
+      placeholder:text-slate-500
+      `
+
+      : `
+      bg-white
+      border-slate-200
+      text-slate-800
+      placeholder:text-slate-400
+      shadow-sm
+      `;
+
+  const subText =
+    isDark
+      ? "text-slate-400"
+      : "text-slate-500";
 
   // =========================================
   // STATES
@@ -235,7 +332,7 @@ const RestTimerPage = () => {
     };
 
   // =========================================
-  // TIMER CONTROLS
+  // CONTROLS
   // =========================================
 
   const pauseTimer =
@@ -266,7 +363,7 @@ const RestTimerPage = () => {
     };
 
   // =========================================
-  // START WORKOUT
+  // WORKOUT SESSION
   // =========================================
 
   const startWorkout =
@@ -284,10 +381,6 @@ const RestTimerPage = () => {
         0
       );
     };
-
-  // =========================================
-  // STOP WORKOUT
-  // =========================================
 
   const stopWorkout =
     () => {
@@ -310,10 +403,6 @@ const RestTimerPage = () => {
 
       playBeep();
     };
-
-  // =========================================
-  // REFRESH WORKOUT
-  // =========================================
 
   const refreshWorkout =
     () => {
@@ -348,22 +437,17 @@ const RestTimerPage = () => {
 
   return (
 
-    <div className="min-h-screen bg-[#070B1A] text-white p-5 pb-32 overflow-hidden">
-
-      {/* HIDE SCROLLBAR */}
-
-      <style>
-        {`
-          ::-webkit-scrollbar{
-            width:0px;
-            height:0px;
-          }
-
-          *{
-            scrollbar-width:none;
-          }
-        `}
-      </style>
+    <div
+      className={`
+      min-h-screen
+      ${bgClass}
+      p-5
+      pb-32
+      overflow-hidden
+      transition-all
+      duration-500
+      `}
+    >
 
       {/* HEADER */}
 
@@ -379,44 +463,99 @@ const RestTimerPage = () => {
           y: 0,
         }}
 
-        className="
-        bg-white/[0.04]
+        className={`
+        ${cardClass}
         border
-        border-white/10
-        rounded-[28px]
-        p-5
-        mb-5
-        "
+        rounded-[32px]
+        p-6
+        mb-6
+        `}
       >
 
         <div className="flex items-center justify-between">
 
           <div>
 
-            <h1 className="text-3xl font-black">
-              Rest Timer
-            </h1>
+            <div className="flex items-center gap-3">
 
-            <p className="text-slate-400 mt-1 text-sm">
-              Smart workout recovery tracker
-            </p>
+              <div
+                className={`
+                w-14
+                h-14
+                rounded-[18px]
+                flex
+                items-center
+                justify-center
+
+                ${
+                  isDark
+
+                    ? `
+                    bg-gradient-to-r
+                    from-pink-500
+                    to-orange-500
+                    text-white
+                    `
+
+                    : `
+                    bg-gradient-to-r
+                    from-pink-100
+                    to-orange-100
+                    text-orange-500
+                    `
+                }
+                `}
+              >
+
+                <Clock3 className="w-7 h-7" />
+
+              </div>
+
+              <div>
+
+                <h1 className="text-4xl font-black">
+                  Rest Timer
+                </h1>
+
+                <p className={`${subText} text-sm mt-1`}>
+                  Smart workout recovery tracker
+                </p>
+
+              </div>
+            </div>
           </div>
 
           <div
-            className="
-            w-16
-            h-16
-            rounded-[20px]
-            bg-gradient-to-r
-            from-pink-500
-            to-orange-500
+            className={`
+            px-5
+            py-3
+            rounded-2xl
             flex
             items-center
-            justify-center
-            "
+            gap-2
+            font-semibold
+
+            ${
+              isDark
+
+                ? `
+                bg-cyan-500/10
+                text-cyan-400
+                border border-cyan-500/20
+                `
+
+                : `
+                bg-cyan-50
+                text-cyan-700
+                border border-cyan-200
+                `
+            }
+            `}
           >
 
-            <Clock3 className="w-8 h-8" />
+            <Sparkles size={18} />
+
+            Recovery Mode
 
           </div>
         </div>
@@ -425,36 +564,96 @@ const RestTimerPage = () => {
       {/* WORKOUT SESSION */}
 
       <div
-        className="
-        bg-white/[0.04]
+        className={`
+        ${cardClass}
         border
-        border-white/10
-        rounded-[28px]
-        p-5
-        mb-5
-        "
+        rounded-[32px]
+        p-6
+        mb-6
+        `}
       >
 
-        <div className="flex items-center justify-between gap-5 flex-wrap">
+        <div className="flex items-center justify-between flex-wrap gap-5">
 
           <div>
 
-            <h2 className="text-2xl font-black">
-              Workout Session
-            </h2>
+            <div className="flex items-center gap-3">
 
-            <p className="text-slate-400 text-sm mt-1">
-              Live workout duration tracker
-            </p>
+              <div
+                className={`
+                w-14
+                h-14
+                rounded-[18px]
+                flex
+                items-center
+                justify-center
+
+                ${
+                  isDark
+
+                    ? `
+                    bg-gradient-to-r
+                    from-cyan-500
+                    to-blue-500
+                    text-white
+                    `
+
+                    : `
+                    bg-gradient-to-r
+                    from-cyan-100
+                    to-blue-100
+                    text-cyan-700
+                    `
+                }
+                `}
+              >
+
+                <Dumbbell className="w-7 h-7" />
+
+              </div>
+
+              <div>
+
+                <h2 className="text-3xl font-black">
+                  Workout Session
+                </h2>
+
+                <p className={`${subText} mt-1`}>
+                  Live workout duration tracker
+                </p>
+
+              </div>
+            </div>
           </div>
 
-          <div className="text-right">
+          <div
+            className={`
+            px-6
+            py-5
+            rounded-[26px]
+            text-center
 
-            <p className="text-slate-400 text-xs">
+            ${
+              isDark
+
+                ? `
+                bg-cyan-500/10
+                border border-cyan-500/20
+                `
+
+                : `
+                bg-cyan-50
+                border border-cyan-200
+                `
+            }
+            `}
+          >
+
+            <p className={`${subText} text-sm`}>
               Workout Duration
             </p>
 
-            <h1 className="text-4xl font-black text-cyan-400 mt-1">
+            <h1 className="text-5xl font-black text-cyan-400 mt-2">
 
               {formatTime(
                 liveWorkoutSeconds
@@ -466,7 +665,7 @@ const RestTimerPage = () => {
 
         {/* BUTTONS */}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
 
           {!workoutStarted ? (
 
@@ -480,11 +679,13 @@ const RestTimerPage = () => {
               bg-gradient-to-r
               from-green-500
               to-emerald-500
+              text-white
               font-bold
               flex
               items-center
               justify-center
               gap-3
+              shadow-lg
               "
             >
 
@@ -506,11 +707,13 @@ const RestTimerPage = () => {
               bg-gradient-to-r
               from-red-500
               to-pink-500
+              text-white
               font-bold
               flex
               items-center
               justify-center
               gap-3
+              shadow-lg
               "
             >
 
@@ -527,20 +730,33 @@ const RestTimerPage = () => {
             onClick={
               refreshWorkout
             }
-            className="
+            className={`
             h-14
             rounded-2xl
-            bg-white/10
-            border
-            border-white/10
             font-bold
             flex
             items-center
             justify-center
             gap-3
-            hover:bg-white/15
             transition-all
-            "
+
+            ${
+              isDark
+
+                ? `
+                bg-white/5
+                border border-white/10
+                hover:bg-white/10
+                `
+
+                : `
+                bg-white
+                border border-slate-200
+                hover:bg-slate-50
+                shadow-sm
+                `
+            }
+            `}
           >
 
             <RotateCcw
@@ -555,17 +771,28 @@ const RestTimerPage = () => {
           {/* TOTAL */}
 
           <div
-            className="
+            className={`
             h-14
             rounded-2xl
-            bg-cyan-500/10
-            border
-            border-cyan-500/20
             flex
             items-center
             justify-center
             gap-3
-            "
+
+            ${
+              isDark
+
+                ? `
+                bg-cyan-500/10
+                border border-cyan-500/20
+                `
+
+                : `
+                bg-cyan-50
+                border border-cyan-200
+                `
+            }
+            `}
           >
 
             <Timer className="text-cyan-400" />
@@ -583,7 +810,7 @@ const RestTimerPage = () => {
 
       {/* PRESETS */}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
 
         {presets.map(
           (
@@ -596,11 +823,11 @@ const RestTimerPage = () => {
               key={index}
 
               whileHover={{
-                y: -4,
+                y: -5,
               }}
 
               whileTap={{
-                scale: 0.95,
+                scale: 0.96,
               }}
 
               onClick={() =>
@@ -609,26 +836,36 @@ const RestTimerPage = () => {
                 )
               }
 
-              className="
-              h-24
-              rounded-[24px]
-              bg-white/[0.04]
+              className={`
+              rounded-[28px]
+              p-6
               border
-              border-white/10
-              flex
-              flex-col
-              items-center
-              justify-center
-              hover:border-pink-500/40
               transition-all
-              "
+
+              ${
+                isDark
+
+                  ? `
+                  bg-white/[0.04]
+                  border-white/10
+                  hover:border-pink-500/40
+                  `
+
+                  : `
+                  bg-white/80
+                  border-white
+                  hover:border-pink-300
+                  shadow-[0_8px_30px_rgba(0,0,0,0.05)]
+                  `
+              }
+              `}
             >
 
-              <h2 className="text-3xl font-black text-pink-400">
+              <h2 className="text-4xl font-black text-pink-400">
                 {item}s
               </h2>
 
-              <p className="text-slate-400 text-sm">
+              <p className={`${subText} mt-2`}>
                 Quick Start
               </p>
 
@@ -640,36 +877,36 @@ const RestTimerPage = () => {
       {/* CUSTOM */}
 
       <div
-        className="
-        bg-white/[0.04]
+        className={`
+        ${cardClass}
         border
-        border-white/10
-        rounded-[28px]
-        p-5
-        "
+        rounded-[32px]
+        p-6
+        `}
       >
 
         <div className="flex flex-col md:flex-row gap-4">
 
           <input
             type="number"
-            placeholder="Custom seconds"
+            placeholder="Enter custom seconds..."
             value={customTime}
             onChange={(e) =>
               setCustomTime(
                 e.target.value
               )
             }
-            className="
+            className={`
             flex-1
             h-14
             rounded-2xl
-            bg-white/10
             border
-            border-white/10
             px-5
             outline-none
-            "
+            transition-all
+
+            ${inputClass}
+            `}
           />
 
           <button
@@ -696,7 +933,9 @@ const RestTimerPage = () => {
             bg-gradient-to-r
             from-pink-500
             to-orange-500
+            text-white
             font-bold
+            shadow-lg
             "
           >
             Start Timer
@@ -750,16 +989,29 @@ const RestTimerPage = () => {
                 opacity: 0,
               }}
 
-              className="
+              className={`
               w-full
               max-w-md
-              bg-[#111827]
-              border
-              border-white/10
               rounded-[34px]
               p-7
               relative
-              "
+              border
+
+              ${
+                isDark
+
+                  ? `
+                  bg-[#111827]
+                  border-white/10
+                  `
+
+                  : `
+                  bg-white
+                  border-slate-200
+                  shadow-[0_20px_60px_rgba(0,0,0,0.15)]
+                  `
+              }
+              `}
             >
 
               {/* CLOSE */}
@@ -804,6 +1056,7 @@ const RestTimerPage = () => {
                 justify-center
                 mx-auto
                 mb-5
+                text-white
                 "
               >
 
@@ -815,7 +1068,7 @@ const RestTimerPage = () => {
 
               <div className="text-center">
 
-                <p className="text-slate-400">
+                <p className={subText}>
                   Rest Countdown
                 </p>
 
@@ -830,14 +1083,19 @@ const RestTimerPage = () => {
                 {/* PROGRESS */}
 
                 <div
-                  className="
+                  className={`
                   w-full
                   h-3
                   rounded-full
-                  bg-white/10
                   overflow-hidden
                   mb-8
-                  "
+
+                  ${
+                    isDark
+                      ? "bg-white/10"
+                      : "bg-slate-100"
+                  }
+                  `}
                 >
 
                   <motion.div
@@ -876,7 +1134,7 @@ const RestTimerPage = () => {
                       className="
                       h-14
                       rounded-2xl
-                      bg-green-500/20
+                      bg-green-500/15
                       text-green-400
                       flex
                       items-center
@@ -897,7 +1155,7 @@ const RestTimerPage = () => {
                       className="
                       h-14
                       rounded-2xl
-                      bg-yellow-500/20
+                      bg-yellow-500/15
                       text-yellow-400
                       flex
                       items-center
@@ -917,7 +1175,7 @@ const RestTimerPage = () => {
                     className="
                     h-14
                     rounded-2xl
-                    bg-cyan-500/20
+                    bg-cyan-500/15
                     text-cyan-400
                     flex
                     items-center
@@ -943,7 +1201,7 @@ const RestTimerPage = () => {
                     className="
                     h-14
                     rounded-2xl
-                    bg-red-500/20
+                    bg-red-500/15
                     text-red-400
                     flex
                     items-center
@@ -961,7 +1219,7 @@ const RestTimerPage = () => {
         )}
       </AnimatePresence>
 
-      {/* WORKOUT COMPLETE POPUP */}
+      {/* WORKOUT COMPLETE */}
 
       <AnimatePresence>
 
@@ -1011,16 +1269,29 @@ const RestTimerPage = () => {
                 opacity: 0,
               }}
 
-              className="
+              className={`
               w-full
               max-w-md
               rounded-[34px]
-              bg-[#111827]
-              border
-              border-white/10
               p-7
               text-center
-              "
+              border
+
+              ${
+                isDark
+
+                  ? `
+                  bg-[#111827]
+                  border-white/10
+                  `
+
+                  : `
+                  bg-white
+                  border-slate-200
+                  shadow-[0_20px_60px_rgba(0,0,0,0.15)]
+                  `
+              }
+              `}
             >
 
               <div
@@ -1047,7 +1318,7 @@ const RestTimerPage = () => {
                 Great Job 🔥
               </h1>
 
-              <p className="text-slate-400 mt-3 text-lg">
+              <p className={`${subText} mt-3 text-lg`}>
                 You worked out for
               </p>
 
@@ -1073,7 +1344,9 @@ const RestTimerPage = () => {
                 bg-gradient-to-r
                 from-pink-500
                 to-orange-500
+                text-white
                 font-bold
+                shadow-lg
                 "
               >
                 Awesome

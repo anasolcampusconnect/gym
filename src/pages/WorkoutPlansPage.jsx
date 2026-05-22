@@ -18,7 +18,9 @@ import {
   useEffect,
 } from "react";
 
-import { motion } from "framer-motion";
+import {
+  motion,
+} from "framer-motion";
 
 import workoutModes from "../data/workoutModes";
 
@@ -40,6 +42,104 @@ const WorkoutPlansPage = () => {
 
   const storageKey =
     `workout_routines_${currentUser?.email || "guest"}`;
+
+  // =========================================
+  // THEME
+  // =========================================
+
+  const settings =
+    JSON.parse(
+      localStorage.getItem(
+        `gym_settings_${currentUser?.email || "guest"}`
+      )
+    ) || {};
+
+  const currentTheme =
+    settings?.theme || "dark";
+
+  const isDark =
+    currentTheme === "dark" ||
+
+    (
+      currentTheme === "system" &&
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches
+    );
+
+  // =========================================
+  // THEME CLASSES
+  // =========================================
+
+  const bgClass =
+    isDark
+
+      ? `
+      bg-[#070B1A]
+      text-white
+      `
+
+      : `
+      bg-gradient-to-br
+      from-[#fdf2f8]
+      via-[#eef2ff]
+      to-[#ecfeff]
+      text-slate-900
+      `;
+
+  const cardClass =
+    isDark
+
+      ? `
+      bg-white/[0.05]
+      border-white/10
+      `
+
+      : `
+      bg-white/80
+      border-white/70
+      backdrop-blur-xl
+      shadow-[0_8px_30px_rgba(15,23,42,0.06)]
+      `;
+
+  const inputClass =
+    isDark
+
+      ? `
+      bg-white/5
+      border-white/10
+      text-white
+      placeholder:text-slate-500
+      `
+
+      : `
+      bg-white
+      border-slate-200
+      text-slate-800
+      placeholder:text-slate-400
+      shadow-sm
+      `;
+
+  const subText =
+    isDark
+      ? "text-slate-400"
+      : "text-slate-500";
+
+  const dropdownClass =
+    isDark
+
+      ? `
+      bg-[#111827]
+      border-white/10
+      text-white
+      `
+
+      : `
+      bg-white
+      border-slate-200
+      text-slate-800
+      shadow-sm
+      `;
 
   // =========================================
   // ALL EXERCISES
@@ -307,19 +407,19 @@ const WorkoutPlansPage = () => {
 
   return (
 
-    <div className="
-    min-h-screen
-    bg-gradient-to-br
-    from-[#0f172a]
-    via-[#111827]
-    to-[#1e1b4b]
-    text-white
-    p-5
-    pb-32
-    overflow-x-hidden
-    ">
+    <div
+      className={`
+      min-h-screen
+      ${bgClass}
+      p-5
+      pb-32
+      overflow-x-hidden
+      transition-all
+      duration-500
+      `}
+    >
 
-      {/* HIDE SCROLLBAR */}
+      {/* SCROLLBAR */}
       <style>
         {`
           ::-webkit-scrollbar{
@@ -334,15 +434,23 @@ const WorkoutPlansPage = () => {
       </style>
 
       {/* HEADER */}
-      <div className="
-      flex
-      flex-col
-      lg:flex-row
-      justify-between
-      lg:items-center
-      gap-5
-      mb-8
-      ">
+
+      <div
+        className={`
+        ${cardClass}
+        border
+        rounded-[34px]
+        p-6
+        mb-8
+
+        flex
+        flex-col
+        lg:flex-row
+        justify-between
+        lg:items-center
+        gap-5
+        `}
+      >
 
         <div>
 
@@ -354,10 +462,7 @@ const WorkoutPlansPage = () => {
             Workout Plans
           </h1>
 
-          <p className="
-          text-slate-400
-          mt-2
-          ">
+          <p className={`${subText} mt-2`}>
             Create personalized workout routines
           </p>
         </div>
@@ -366,18 +471,34 @@ const WorkoutPlansPage = () => {
           onClick={() =>
             navigate("/workout")
           }
-          className="
+          className={`
           h-14
           px-6
           rounded-2xl
-          bg-gradient-to-r
-          from-pink-500
-          to-orange-500
           font-bold
           flex
           items-center
           gap-3
-          "
+          transition-all
+
+          ${
+            isDark
+
+              ? `
+              bg-gradient-to-r
+              from-pink-500
+              to-orange-500
+              text-white
+              `
+
+              : `
+              bg-white
+              text-slate-800
+              border border-slate-200
+              shadow-md
+              `
+          }
+          `}
         >
 
           <ArrowLeft />
@@ -387,6 +508,7 @@ const WorkoutPlansPage = () => {
       </div>
 
       {/* MAIN */}
+
       <div className="
       grid
       grid-cols-1
@@ -395,14 +517,16 @@ const WorkoutPlansPage = () => {
       ">
 
         {/* CREATE */}
-        <div className="
-        xl:col-span-1
-        bg-white/5
-        border
-        border-white/10
-        rounded-[32px]
-        p-6
-        ">
+
+        <div
+          className={`
+          xl:col-span-1
+          ${cardClass}
+          border
+          rounded-[32px]
+          p-6
+          `}
+        >
 
           <h2 className="
           text-3xl
@@ -413,6 +537,7 @@ const WorkoutPlansPage = () => {
           </h2>
 
           {/* ROUTINE NAME */}
+
           <input
             type="text"
             placeholder="Routine Name"
@@ -422,38 +547,48 @@ const WorkoutPlansPage = () => {
                 e.target.value
               )
             }
-            className="
+            className={`
             w-full
             h-14
             rounded-2xl
-            bg-white/10
             border
-            border-white/10
             px-4
             outline-none
             mb-4
-            "
+            transition-all
+
+            ${inputClass}
+            `}
           />
 
           {/* DAY */}
+
           <select
+            style={{
+              colorScheme:
+                isDark
+                  ? "dark"
+                  : "light",
+            }}
             value={selectedDay}
             onChange={(e) =>
               setSelectedDay(
                 e.target.value
               )
             }
-            className="
+            className={`
             w-full
             h-14
             rounded-2xl
-            bg-white/10
             border
-            border-white/10
             px-4
             outline-none
             mb-4
-            "
+            transition-all
+            cursor-pointer
+
+            ${dropdownClass}
+            `}
           >
 
             <option value="">
@@ -473,7 +608,11 @@ const WorkoutPlansPage = () => {
               <option
                 key={day}
                 value={day}
-                className="bg-[#111827]"
+                className={
+                  isDark
+                    ? "bg-[#111827]"
+                    : "bg-white"
+                }
               >
                 {day}
               </option>
@@ -481,7 +620,14 @@ const WorkoutPlansPage = () => {
           </select>
 
           {/* CATEGORY */}
+
           <select
+            style={{
+              colorScheme:
+                isDark
+                  ? "dark"
+                  : "light",
+            }}
             value={selectedCategory}
             onChange={(e) => {
 
@@ -491,17 +637,19 @@ const WorkoutPlansPage = () => {
 
               setExerciseName("");
             }}
-            className="
+            className={`
             w-full
             h-14
             rounded-2xl
-            bg-white/10
             border
-            border-white/10
             px-4
             outline-none
             mb-4
-            "
+            transition-all
+            cursor-pointer
+
+            ${dropdownClass}
+            `}
           >
 
             <option value="">
@@ -517,7 +665,11 @@ const WorkoutPlansPage = () => {
                 <option
                   key={index}
                   value={category}
-                  className="bg-[#111827]"
+                  className={
+                    isDark
+                      ? "bg-[#111827]"
+                      : "bg-white"
+                  }
                 >
                   {category}
                 </option>
@@ -526,24 +678,33 @@ const WorkoutPlansPage = () => {
           </select>
 
           {/* EXERCISE */}
+
           <select
+            style={{
+              colorScheme:
+                isDark
+                  ? "dark"
+                  : "light",
+            }}
             value={exerciseName}
             onChange={(e) =>
               setExerciseName(
                 e.target.value
               )
             }
-            className="
+            className={`
             w-full
             h-14
             rounded-2xl
-            bg-white/10
             border
-            border-white/10
             px-4
             outline-none
             mb-4
-            "
+            transition-all
+            cursor-pointer
+
+            ${dropdownClass}
+            `}
           >
 
             <option value="">
@@ -559,7 +720,11 @@ const WorkoutPlansPage = () => {
                 <option
                   key={index}
                   value={item.name}
-                  className="bg-[#111827]"
+                  className={
+                    isDark
+                      ? "bg-[#111827]"
+                      : "bg-white"
+                  }
                 >
                   {item.name}
                 </option>
@@ -568,110 +733,97 @@ const WorkoutPlansPage = () => {
           </select>
 
           {/* INPUTS */}
+
           <div className="
           grid
           grid-cols-2
           gap-4
           ">
 
-            <input
-              type="number"
-              placeholder="Sets"
-              value={sets}
-              onChange={(e) =>
-                setSets(
-                  e.target.value
-                )
-              }
-              className="
-              h-14
-              rounded-2xl
-              bg-white/10
-              border
-              border-white/10
-              px-4
-              outline-none
-              "
-            />
+            {[
+              {
+                placeholder: "Sets",
+                value: sets,
+                setter: setSets,
+              },
+              {
+                placeholder: "Reps",
+                value: reps,
+                setter: setReps,
+              },
+              {
+                placeholder: "Weight (kg)",
+                value: weight,
+                setter: setWeight,
+              },
+              {
+                placeholder: "Duration (min)",
+                value: duration,
+                setter: setDuration,
+              },
+            ].map((item, index) => (
 
-            <input
-              type="number"
-              placeholder="Reps"
-              value={reps}
-              onChange={(e) =>
-                setReps(
-                  e.target.value
-                )
-              }
-              className="
-              h-14
-              rounded-2xl
-              bg-white/10
-              border
-              border-white/10
-              px-4
-              outline-none
-              "
-            />
+              <input
+                key={index}
+                type="number"
+                placeholder={
+                  item.placeholder
+                }
+                value={item.value}
+                onChange={(e) =>
+                  item.setter(
+                    e.target.value
+                  )
+                }
+                className={`
+                h-14
+                rounded-2xl
+                border
+                px-4
+                outline-none
+                transition-all
 
-            <input
-              type="number"
-              placeholder="Weight (kg)"
-              value={weight}
-              onChange={(e) =>
-                setWeight(
-                  e.target.value
-                )
-              }
-              className="
-              h-14
-              rounded-2xl
-              bg-white/10
-              border
-              border-white/10
-              px-4
-              outline-none
-              "
-            />
-
-            <input
-              type="number"
-              placeholder="Duration (min)"
-              value={duration}
-              onChange={(e) =>
-                setDuration(
-                  e.target.value
-                )
-              }
-              className="
-              h-14
-              rounded-2xl
-              bg-white/10
-              border
-              border-white/10
-              px-4
-              outline-none
-              "
-            />
+                ${inputClass}
+                `}
+              />
+            ))}
           </div>
 
-          {/* ADD */}
+          {/* ADD BUTTON */}
+
           <button
             onClick={addExercise}
-            className="
+            className={`
             w-full
             h-14
             rounded-2xl
-            bg-gradient-to-r
-            from-cyan-500
-            to-blue-500
             font-bold
             mt-6
             flex
             items-center
             justify-center
             gap-2
-            "
+            transition-all
+
+            ${
+              isDark
+
+                ? `
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-500
+                text-white
+                `
+
+                : `
+                bg-gradient-to-r
+                from-cyan-200
+                to-blue-200
+                text-slate-900
+                shadow-md
+                `
+            }
+            `}
           >
 
             <Plus />
@@ -680,6 +832,7 @@ const WorkoutPlansPage = () => {
           </button>
 
           {/* EXERCISE LIST */}
+
           <div className="
           space-y-4
           mt-6
@@ -693,13 +846,25 @@ const WorkoutPlansPage = () => {
 
                 <div
                   key={index}
-                  className="
-                  bg-white/5
+                  className={`
                   border
-                  border-white/10
                   rounded-2xl
                   p-4
-                  "
+
+                  ${
+                    isDark
+
+                      ? `
+                      bg-white/5
+                      border-white/10
+                      `
+
+                      : `
+                      bg-slate-50
+                      border-slate-200
+                      `
+                  }
+                  `}
                 >
 
                   <h3 className="
@@ -709,21 +874,35 @@ const WorkoutPlansPage = () => {
                     {exercise.name}
                   </h3>
 
-                  <p className="
-                  text-cyan-400
-                  mt-1
-                  ">
+                  <p
+                    className={`
+                    mt-1
+
+                    ${
+                      isDark
+                        ? "text-cyan-400"
+                        : "text-cyan-600"
+                    }
+                    `}
+                  >
                     {exercise.category}
                   </p>
 
-                  <div className="
-                  grid
-                  grid-cols-2
-                  gap-3
-                  mt-4
-                  text-sm
-                  text-slate-300
-                  ">
+                  <div
+                    className={`
+                    grid
+                    grid-cols-2
+                    gap-3
+                    mt-4
+                    text-sm
+
+                    ${
+                      isDark
+                        ? "text-slate-300"
+                        : "text-slate-600"
+                    }
+                    `}
+                  >
 
                     <p>
                       Sets: {exercise.sets}
@@ -747,22 +926,40 @@ const WorkoutPlansPage = () => {
           </div>
 
           {/* SAVE */}
+
           <button
             onClick={saveRoutine}
-            className="
+            className={`
             w-full
             h-14
             rounded-2xl
-            bg-gradient-to-r
-            from-pink-500
-            to-orange-500
             font-bold
             mt-6
             flex
             items-center
             justify-center
             gap-2
-            "
+            transition-all
+
+            ${
+              isDark
+
+                ? `
+                bg-gradient-to-r
+                from-pink-500
+                to-orange-500
+                text-white
+                `
+
+                : `
+                bg-gradient-to-r
+                from-pink-200
+                to-orange-200
+                text-slate-900
+                shadow-md
+                `
+            }
+            `}
           >
 
             <Save />
@@ -772,18 +969,20 @@ const WorkoutPlansPage = () => {
         </div>
 
         {/* SAVED ROUTINES */}
+
         <div className="
         xl:col-span-2
         space-y-6
         ">
 
-          <div className="
-          bg-white/5
-          border
-          border-white/10
-          rounded-[32px]
-          p-6
-          ">
+          <div
+            className={`
+            ${cardClass}
+            border
+            rounded-[32px]
+            p-6
+            `}
+          >
 
             <h2 className="
             text-3xl
@@ -808,13 +1007,26 @@ const WorkoutPlansPage = () => {
                     whileHover={{
                       y: -5,
                     }}
-                    className="
-                    bg-white/5
+                    className={`
                     border
-                    border-white/10
                     rounded-[28px]
                     p-6
-                    "
+
+                    ${
+                      isDark
+
+                        ? `
+                        bg-white/5
+                        border-white/10
+                        `
+
+                        : `
+                        bg-white
+                        border-slate-200
+                        shadow-[0_6px_20px_rgba(15,23,42,0.05)]
+                        `
+                    }
+                    `}
                   >
 
                     <div className="
@@ -832,38 +1044,64 @@ const WorkoutPlansPage = () => {
                           {routine.name}
                         </h3>
 
-                        <p className="
-                        text-cyan-400
-                        mt-2
-                        flex
-                        items-center
-                        gap-2
-                        ">
+                        <p
+                          className={`
+                          mt-2
+                          flex
+                          items-center
+                          gap-2
+
+                          ${
+                            isDark
+                              ? "text-cyan-400"
+                              : "text-cyan-600"
+                          }
+                          `}
+                        >
 
                           <CalendarDays size={18} />
 
                           {routine.day}
                         </p>
                       </div>
+<div
+  className={`
+  w-14
+  h-14
+  rounded-2xl
+  flex
+  items-center
+  justify-center
+  shadow-md
 
-                      <div className="
-                      w-14
-                      h-14
-                      rounded-2xl
-                      bg-gradient-to-r
-                      from-pink-500
-                      to-orange-500
-                      flex
-                      items-center
-                      justify-center
-                      ">
+  ${
+    isDark
 
-                        <Dumbbell />
+      ? `
+      bg-gradient-to-r
+      from-pink-500
+      to-orange-500
+      text-white
+      `
 
-                      </div>
+      : `
+      bg-gradient-to-r
+      from-pink-100
+      to-orange-100
+      text-orange-500
+      border border-orange-200
+      `
+  }
+  `}
+>
+
+  <Dumbbell className="w-6 h-6" />
+
+</div>
                     </div>
 
                     {/* EXERCISES */}
+
                     <div className="
                     space-y-3
                     mt-6
@@ -877,11 +1115,25 @@ const WorkoutPlansPage = () => {
 
                           <div
                             key={index}
-                            className="
-                            bg-white/5
+                            className={`
                             rounded-2xl
                             p-4
-                            "
+                            border
+
+                            ${
+                              isDark
+
+                                ? `
+                                bg-white/5
+                                border-white/10
+                                `
+
+                                : `
+                                bg-slate-50
+                                border-slate-200
+                                `
+                            }
+                            `}
                           >
 
                             <h4 className="
@@ -890,22 +1142,36 @@ const WorkoutPlansPage = () => {
                               {exercise.name}
                             </h4>
 
-                            <p className="
-                            text-cyan-400
-                            text-sm
-                            mt-1
-                            ">
+                            <p
+                              className={`
+                              text-sm
+                              mt-1
+
+                              ${
+                                isDark
+                                  ? "text-cyan-400"
+                                  : "text-cyan-600"
+                              }
+                              `}
+                            >
                               {exercise.category}
                             </p>
 
-                            <div className="
-                            grid
-                            grid-cols-2
-                            gap-2
-                            mt-3
-                            text-sm
-                            text-slate-300
-                            ">
+                            <div
+                              className={`
+                              grid
+                              grid-cols-2
+                              gap-2
+                              mt-3
+                              text-sm
+
+                              ${
+                                isDark
+                                  ? "text-slate-300"
+                                  : "text-slate-600"
+                              }
+                              `}
+                            >
 
                               <p>
                                 Sets: {exercise.sets}
@@ -929,6 +1195,7 @@ const WorkoutPlansPage = () => {
                     </div>
 
                     {/* ACTIONS */}
+
                     <div className="
                     grid
                     grid-cols-2
@@ -942,14 +1209,31 @@ const WorkoutPlansPage = () => {
                             routine
                           )
                         }
-                        className="
+                        className={`
                         h-12
                         rounded-2xl
-                        bg-gradient-to-r
-                        from-cyan-500
-                        to-blue-500
                         font-bold
-                        "
+                        transition-all
+
+                        ${
+                          isDark
+
+                            ? `
+                            bg-gradient-to-r
+                            from-cyan-500
+                            to-blue-500
+                            text-white
+                            `
+
+                            : `
+                            bg-gradient-to-r
+                            from-cyan-200
+                            to-blue-200
+                            text-slate-900
+                            shadow-md
+                            `
+                        }
+                        `}
                       >
                         Load
                       </button>
@@ -960,16 +1244,33 @@ const WorkoutPlansPage = () => {
                             routine.id
                           )
                         }
-                        className="
+                        className={`
                         h-12
                         rounded-2xl
-                        bg-gradient-to-r
-                        from-red-500
-                        to-pink-500
                         flex
                         items-center
                         justify-center
-                        "
+                        transition-all
+
+                        ${
+                          isDark
+
+                            ? `
+                            bg-gradient-to-r
+                            from-red-500
+                            to-pink-500
+                            text-white
+                            `
+
+                            : `
+                            bg-gradient-to-r
+                            from-red-200
+                            to-pink-200
+                            text-slate-900
+                            shadow-md
+                            `
+                        }
+                        `}
                       >
 
                         <Trash2 size={18} />
