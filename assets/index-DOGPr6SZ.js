@@ -2024,9 +2024,10 @@ ${S?`bg-white/10`:`bg-slate-100 text-slate-700`}
         `}),(0,G.jsxs)(`div`,{className:`px-5 py-5 pb-32`,children:[(0,G.jsxs)(K.div,{initial:{opacity:0,y:20},animate:{opacity:1,y:0},className:`\r
   relative\r
   overflow-hidden\r
-  rounded-[38px]\r
-  h-[520px]\r
+  rounded-[40px]\r
+  h-[600px]\r
   mb-7\r
+\r
   `,children:[(0,G.jsx)(`img`,{src:`https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1800&auto=format&fit=crop`,alt:`Fitness`,className:`\r
     absolute\r
     inset-0\r
