@@ -17,6 +17,7 @@ import {
   Ruler,
   HeartPulse,
   AlertTriangle,
+  Target,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -61,6 +62,7 @@ const navigate = useNavigate();
       dob: "",
       bio: "",
       image: "",
+      targetWeight: "",
 
       // NEW HEALTH FIELDS
     heightFt: "",
@@ -1142,6 +1144,60 @@ if (bmi) {
           </div>
 
           {/* HEALTH */}
+          {/* TARGET WEIGHT */}
+
+<div>
+
+  <label
+    className={`
+    ${subText}
+    text-sm
+    mb-2
+    block
+    `}
+  >
+    Target Weight (kg)
+  </label>
+
+  <div
+    className={`
+    h-14
+    rounded-2xl
+    border
+    px-4
+    flex
+    items-center
+    gap-3
+    ${input}
+    `}
+  >
+
+    <Target
+      size={18}
+      className="text-cyan-400"
+    />
+
+    <input
+      type="number"
+      placeholder="Target weight"
+      value={profile.targetWeight}
+      onChange={(e) =>
+        setProfile({
+          ...profile,
+          targetWeight:
+            e.target.value,
+        })
+      }
+      className="
+      bg-transparent
+      outline-none
+      w-full
+      "
+    />
+
+  </div>
+
+</div>
 
         {/* HEALTH STATUS */}
 

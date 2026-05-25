@@ -7,7 +7,6 @@ import {
 
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
-import DashboardPage from "./pages/Dashboard";
 import CalendarPage from "./pages/CalendarPage";
 import MainLayout from "./layouts/MainLayout";
 
@@ -26,6 +25,10 @@ import MoodWorkout from "./pages/MoodWorkoutPage";
 import Workout from "./pages/WorkoutPage";
 import TimerPage from "./pages/RestTimer";
 import SettingsPage from "./pages/SettingsPage";
+import WorkoutSuggestions from "./pages/WorkoutSuggestions";
+import AIFitnessDashboard from "./pages/AIFitnessDashboard";
+import WaterTrckerPage from "./pages/WaterTrckerPage";
+import SleepTrackerPage from "./pages/SleepTrackerPage";
 function App() {
 
   const user =
@@ -43,6 +46,10 @@ function App() {
           path="/"
           element={<LoginPage />}
         />
+        <Route
+  path="/workout-suggestions"
+  element={<WorkoutSuggestions />}
+/>
 
         {/* REGISTER */}
         <Route
@@ -54,13 +61,22 @@ function App() {
           path="/settings"
           element={<SettingsPage />}
         />
+         <Route
+          path="/water"
+          element={<WaterTrckerPage />}
+        />
+         <Route
+          path="/sleep"
+          element={<SleepTrackerPage />}
+        />
 
         {/* DASHBOARD */}
         <Route
           path="/dashboard"
           element={
             user ? (
-              <DashboardPage />
+              <AIFitnessDashboard />
+              // <DashboardPage/>
             ) : (
               <Navigate to="/" />
             )

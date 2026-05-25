@@ -157,7 +157,7 @@ const WorkoutPage = () => {
       id: "suggestions",
 
       label:
-        "AI Suggestions",
+        "Suggestions",
 
       description:
         "Smart workout recommendations",
@@ -172,7 +172,7 @@ const WorkoutPage = () => {
         "from-purple-200 to-indigo-200",
 
       route:
-        "/moodworkout",
+        "/workout-suggestions",
     },
 
     {

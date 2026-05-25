@@ -558,7 +558,7 @@ const workoutModes = [
   duration: "20 Reps",
   calories: "50 kcal",
   image:
-    "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1200",
+    "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=1200",
   video:
     "https://www.youtube.com/watch?v=iSSAk4XCsRA",
 },
@@ -837,7 +837,7 @@ const workoutModes = [
   duration: "20 Min",
   calories: "45 kcal",
   image:
-    "https://images.unsplash.com/photo-1483721310020-03333e577078?q=80&w=1200",
+    "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop",
   video:
     "https://www.youtube.com/watch?v=iSSAk4XCsRA",
 },
