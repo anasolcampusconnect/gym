@@ -153,9 +153,10 @@ const ModesPage = () => {
   className="
   relative
   overflow-hidden
-  rounded-[38px]
-  h-[520px]
+  rounded-[40px]
+  h-[600px]
   mb-7
+
   "
 >
 
